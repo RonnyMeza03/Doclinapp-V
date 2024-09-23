@@ -10,7 +10,7 @@ export class UsuariosController {
 
   @Post()
   //@Body= datos que vienen desde el cliente
-  create(@Body() createUsuarioDto: CreateUsuarioDto): Promise<Usuarios> {
+  create(@Body() createUsuarioDto: CreateUsuarioDto) {
     return this.usuariosService.createUsuario(createUsuarioDto);
   }
 
@@ -22,17 +22,17 @@ export class UsuariosController {
 
   @Get(':id')
   //             para convertirlo en number
-  findOne(@Param('id', ParseIntPipe) id:number ): Promise<Usuarios>{
+  findOne(@Param('id', ParseIntPipe) id:number ){
     return this.usuariosService.findOne(+id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUsuarioDto: UpdateUsuarioDto) {
+  update(@Param('id', ParseIntPipe) id: number, @Body() updateUsuarioDto: UpdateUsuarioDto) {
     return this.usuariosService.update(+id, updateUsuarioDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  remove(@Param('id', ParseIntPipe) id: number) {
     return this.usuariosService.remove(+id);
   }
 }

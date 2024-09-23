@@ -22,6 +22,17 @@ export class AplicacionController {
     return this.aplicacionService.findOne(+id);
   }
 
+  // Nueva ruta: Obtiene los pacientes por ID de aplicación
+  @Get(':aplicacionID/pacientes')
+  async getPacientesPorAplicacion(@Param('aplicacionID') aplicacionID: number) {
+    return this.aplicacionService.findPacientesPorAplicacion(aplicacionID);
+  }
+
+  @Get(':aplicacionID/usuarios')
+  async getUsuariosAplicacion(@Param('aplicacionID') aplicacionID: number) {
+    return this.aplicacionService.findUsuariosAplicacion(aplicacionID);
+  }
+
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateAplicacionDto: UpdateAplicacionDto) {
     return this.aplicacionService.update(+id, updateAplicacionDto);

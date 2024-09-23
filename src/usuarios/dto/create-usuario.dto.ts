@@ -9,5 +9,5 @@ export class CreateUsuarioDto {
     telefono: number
     rol: string
     fechaNacimiento: Date
-    aplicacionID: Aplicacion
+    aplicacionID: number
 }

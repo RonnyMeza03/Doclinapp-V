@@ -38,9 +38,12 @@ export abstract class Usuarios {
   public fechaNacimiento: Date;
 
   // Relación ManyToOne con Aplicacion
-  @ManyToOne(() => Aplicacion, Aplicacion => Aplicacion.getId)
-  @JoinColumn({ name: 'aplicacion_id' }) 
-  public aplicacionID: Aplicacion;
+  @ManyToOne(() => Aplicacion, Aplicacion => Aplicacion.getNombre, { eager: true })
+  @JoinColumn({ name: 'aplicacionID' }) 
+  public nombreAplicacion: Aplicacion;
+
+  @Column()
+  public aplicacionID: number;
 
   @Column({type: 'datetime', default: () => 'CURRENT_TIMESTAMP'})
   public createdAt: Date;
@@ -64,7 +67,7 @@ export abstract class Usuarios {
     this.telefono = telefono;
     this.rol = rol;
     this.fechaNacimiento = fechaNacimiento;
-    this.aplicacionID = aplicacionID;
+    this.nombreAplicacion = this.nombreAplicacion;
   }
 
   // Métodos GET
@@ -104,8 +107,8 @@ export abstract class Usuarios {
     return this.fechaNacimiento;
   }
 
-  public getAplicacionID(): Aplicacion {
-    return this.aplicacionID;
+  public getNombreAplicacion(): Aplicacion {
+    return this.nombreAplicacion;
   }
 
   // Métodos SET
@@ -145,7 +148,7 @@ export abstract class Usuarios {
     this.fechaNacimiento = fechaNacimiento;
   }
 
-  public setAplicacionID(aplicacionID: Aplicacion): void {
-    this.aplicacionID = aplicacionID;
+  public setNombreAplicacion(nombreAplicacion: Aplicacion): void {
+    this.nombreAplicacion = nombreAplicacion;
   }
 }

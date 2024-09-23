@@ -1,4 +1,5 @@
-import { Injectable } from '@nestjs/common';
+import { AplicacionService } from 'src/aplicacion/aplicacion.service';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateUsuarioDto } from './dto/create-usuario.dto';
 import { UpdateUsuarioDto } from './dto/update-usuario.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -14,9 +15,27 @@ export class UsuariosService {
   */
 
    //Importa la clase, lo convierte en un repositorio de typeORM para poder las consultas de DML (Insert, Delete, Select, Update)  
-  constructor(@InjectRepository(Usuarios) private usuarioRepository: Repository<Usuarios>) {}
+  constructor(@InjectRepository(Usuarios) private usuarioRepository: Repository<Usuarios>, private aplicacionService: AplicacionService) {}
 
-  createUsuario(usuario: CreateUsuarioDto){
+  async createUsuario(usuario: CreateUsuarioDto){
+
+    //Verificamos que la aplicacion existe
+    const aplicacacionEncontrada = this.aplicacionService.findOne(usuario.aplicacionID)
+
+    if(!aplicacacionEncontrada){
+      return new HttpException("Aplicacion no encontrada", HttpStatus.NOT_FOUND)
+    }
+    // es asincrono porque necesita consultar a la base de datos para obtener el usuario encontrado
+    const usuarioEncontrado = await this.usuarioRepository.findOne({
+      where: {
+        nombreUsuario : usuario.nombreUsuario
+      }
+    })
+
+    if (usuarioEncontrado){
+      return new HttpException('El usuario ya existe', HttpStatus.CONFLICT)
+    }
+
     const nuevoUsuario = this.usuarioRepository.create(usuario)
     return this.usuarioRepository.save(nuevoUsuario)
   }
@@ -25,19 +44,44 @@ export class UsuariosService {
     return this.usuarioRepository.find();
   }
 
-  findOne(id: number) {
-    return this.usuarioRepository.findOne({
+  async findOne(id: number) {
+    const usuarioEncontrado = await this.usuarioRepository.findOne({
       where: {
         id
       }
     });
+
+    if (!usuarioEncontrado) {
+      return new HttpException("No se encontro al Usuario", HttpStatus.NOT_FOUND);
+    }
+
+    return usuarioEncontrado;
   }
 
-  update(id: number, updateUsuarioDto: UpdateUsuarioDto) {
-    return `This action updates a #${id} usuario`;
+  async update(id: number, updateUsuarioDto: UpdateUsuarioDto) {
+    const usuarioEncontrado = await this.usuarioRepository.findOne({
+      where: {
+        id
+      }
+    });
+
+    if (!usuarioEncontrado) {
+      return new HttpException("No se encontro al Usuario", HttpStatus.NOT_FOUND);
+    }
+    const updateUsuario = Object.assign(usuarioEncontrado, updateUsuarioDto);
+    return this.usuarioRepository.save(updateUsuario)
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} usuario`;
+  async remove(id: number) {
+    const usuarioEncontrado = await this.usuarioRepository.findOne({
+      where: {
+        id
+      }
+    });
+
+    if (!usuarioEncontrado) {
+      return new HttpException("No se encontro al Usuario", HttpStatus.NOT_FOUND);
+    }
+    return this.usuarioRepository.delete({id});
   }
 }

@@ -1,13 +1,14 @@
+import { Paciente } from 'src/paciente/entities/paciente.entity';
 import { Usuarios } from 'src/usuarios/entities/usuario.entity';
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm'
 
 @Entity({name:'Aplicacion'})
 export class Aplicacion {
     @PrimaryGeneratedColumn()
-    private id: number;
+    public id: number;
 
     @Column()
-    private nombre: string;
+    public nombre: string;
 
     @Column({unique:true})
     private nombreClinica: string;
@@ -23,6 +24,9 @@ export class Aplicacion {
 
     @OneToMany(() => Usuarios, Usuarios => Usuarios.getNombreUsuario)
     usuarios: Usuarios[]
+
+    @OneToMany(() => Paciente, Paciente => Paciente.aplicacionID)
+    paciente: Paciente[]
 
     @Column({type: 'datetime', default: () => 'CURRENT_TIMESTAMP'})
     createdAt: Date;
