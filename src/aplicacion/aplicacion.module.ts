@@ -10,6 +10,6 @@ import { Usuarios } from 'src/usuarios/entities/usuario.entity';
   imports: [TypeOrmModule.forFeature([Aplicacion, Paciente, Usuarios])],
   controllers: [AplicacionController],
   providers: [AplicacionService],
-  exports: [AplicacionService]
+  exports: [AplicacionService],
 })
 export class AplicacionModule {}

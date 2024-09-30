@@ -10,6 +10,6 @@ import { AplicacionModule } from 'src/aplicacion/aplicacion.module';
   imports: [TypeOrmModule.forFeature([Usuarios]), AplicacionModule],
   controllers: [UsuariosController],
   providers: [UsuariosService],
-  exports: [UsuariosService]
+  exports: [UsuariosService],
 })
 export class UsuariosModule {}

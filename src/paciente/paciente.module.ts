@@ -9,6 +9,6 @@ import { AplicacionModule } from 'src/aplicacion/aplicacion.module';
   imports: [TypeOrmModule.forFeature([Paciente]), AplicacionModule],
   controllers: [PacienteController],
   providers: [PacienteService],
-  exports:[PacienteService]
+  exports: [PacienteService],
 })
 export class PacienteModule {}

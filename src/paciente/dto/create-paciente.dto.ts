@@ -1,8 +1,12 @@
 export class CreatePacienteDto {
-      nombre: string
-      apellido: string
-      edad: number
-      sexo: string
+  nombre: string;
+  apellido: string;
+  fechaNacimiento: Date;
+  sexo: string;
+  direccion: string;
+  telefono: string;
+  correo: string;
+  /*
       sistolica: number
       ldl: number
       hdl: number
@@ -18,5 +22,7 @@ export class CreatePacienteDto {
       colesterol: number
       diastolica: number
       altura: number
-      aplicacionID: number
+      */
+  aplicacionID: number;
+  usuarioID: number;
 }

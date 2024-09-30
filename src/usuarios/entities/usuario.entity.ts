@@ -1,7 +1,16 @@
+import { Paciente } from 'src/paciente/entities/paciente.entity';
 import { Aplicacion } from './../../aplicacion/entities/aplicacion.entity';
-import { Entity, Column, PrimaryGeneratedColumn, JoinColumn, ManyToOne, TableInheritance } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  JoinColumn,
+  ManyToOne,
+  TableInheritance,
+  OneToMany,
+} from 'typeorm';
 
-@Entity({name: 'Usuarios'})
+@Entity({ name: 'Usuarios' })
 @TableInheritance({
   column: {
     type: 'varchar',
@@ -9,11 +18,10 @@ import { Entity, Column, PrimaryGeneratedColumn, JoinColumn, ManyToOne, TableInh
   },
 })
 export abstract class Usuarios {
-
   @PrimaryGeneratedColumn()
   public id: number;
 
-  @Column({unique: true})
+  @Column({ unique: true })
   public nombreUsuario: string;
 
   @Column()
@@ -38,14 +46,19 @@ export abstract class Usuarios {
   public fechaNacimiento: Date;
 
   // Relación ManyToOne con Aplicacion
-  @ManyToOne(() => Aplicacion, Aplicacion => Aplicacion.getNombre, { eager: true })
-  @JoinColumn({ name: 'aplicacionID' }) 
+  @ManyToOne(() => Aplicacion, (Aplicacion) => Aplicacion.getNombre, {
+    eager: true,
+  })
+  @JoinColumn({ name: 'aplicacionID' })
   public nombreAplicacion: Aplicacion;
 
   @Column()
   public aplicacionID: number;
 
-  @Column({type: 'datetime', default: () => 'CURRENT_TIMESTAMP'})
+  @OneToMany(() => Paciente, (Paciente) => Paciente.usuarioID)
+  public pacientes: Paciente[];
+
+  @Column({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' })
   public createdAt: Date;
 
   constructor(
@@ -57,7 +70,6 @@ export abstract class Usuarios {
     telefono: number,
     rol: string,
     fechaNacimiento: Date,
-    aplicacionID: Aplicacion
   ) {
     this.nombreUsuario = nombreUsuario;
     this.nombre = nombre;

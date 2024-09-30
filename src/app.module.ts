@@ -5,18 +5,26 @@ import { DoctorModule } from './doctor/doctor.module';
 import { AdminModule } from './admin/admin.module';
 import { PacienteModule } from './paciente/paciente.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-
+import { AnalisisModule } from './analisis/analisis.module';
 
 @Module({
-  imports: [ TypeOrmModule.forRoot({
-    type: 'mysql',
-    host: 'localhost',
-    port: 3306,
-    username: 'root',
-    password: 'contraseñadoclinapp',
-    database: 'doclinappnestjs',
-    entities: [__dirname + '/**/*.entity{.ts,.js}'],
-    synchronize: true
-  }),AplicacionModule, UsuariosModule, DoctorModule, AdminModule, PacienteModule],
+  imports: [
+    TypeOrmModule.forRoot({
+      type: 'mysql',
+      host: 'localhost',
+      port: 3306,
+      username: 'root',
+      password: 'contraseñadoclinapp',
+      database: 'doclinappnestjs',
+      entities: [__dirname + '/**/*.entity{.ts,.js}'],
+      synchronize: true,
+    }),
+    AplicacionModule,
+    UsuariosModule,
+    DoctorModule,
+    AdminModule,
+    PacienteModule,
+    AnalisisModule,
+  ],
 })
 export class AppModule {}
