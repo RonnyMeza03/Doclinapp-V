@@ -42,4 +42,9 @@ export class PacienteController {
   remove(@Param('id') id: string) {
     return this.pacienteService.remove(+id);
   }
+  //http://localhost:4000/paciente/:id/analisis
+  @Get(':pacienteID/analisis')
+  async getPacienteAnalisis(@Param('pacienteID') pacienteID: number) {
+    return this.pacienteService.findAnalisisPaciente(pacienteID);
+  }
 }

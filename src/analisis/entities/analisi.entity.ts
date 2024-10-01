@@ -68,7 +68,7 @@ export class Analisi {
   private analisisCoronaria: number;
 
   @Column()
-  private analsisCongenita: number;
+  private analisisCongenita: number;
 
   @Column()
   private analisisCerebrovascular: number;
@@ -135,7 +135,7 @@ export class Analisi {
     this.analisisHipertension = analisisHipertension ?? 0;
     this.analisisHiperlipidemia = analisisHiperlipidemia ?? 0;
     this.analisisCoronaria = analisisCoronaria ?? 0;
-    this.analsisCongenita = analsisCongenita ?? 0;
+    this.analisisCongenita = analsisCongenita ?? 0;
     this.analisisCerebrovascular = analisisCerebrovascular ?? 0;
     this.analisisDiabetes2 = analisisDiabetes2 ?? 0;
     this.analisisArterial = analisisArterial ?? 0;
@@ -286,12 +286,12 @@ export class Analisi {
     this.analisisCoronaria = value;
   }
 
-  public getAnalsisCongenita(): number {
-    return this.analsisCongenita;
+  public getAnalisisCongenita(): number {
+    return this.analisisCongenita;
   }
 
-  public setAnalsisCongenita(value: number): void {
-    this.analsisCongenita = value;
+  public setAnalisisCongenita(value: number): void {
+    this.analisisCongenita = value;
   }
 
   public getAnalisisCerebrovascular(): number {

@@ -5,12 +5,15 @@ import { Paciente } from './entities/paciente.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { AplicacionService } from 'src/aplicacion/aplicacion.service';
+import { Analisi } from 'src/analisis/entities/analisi.entity';
 
 @Injectable()
 export class PacienteService {
   constructor(
     @InjectRepository(Paciente)
     private pacienteRepository: Repository<Paciente>,
+    @InjectRepository(Analisi)
+    private analalisisRepository: Repository<Analisi>,
     private aplicacionService: AplicacionService,
   ) {}
 
@@ -84,5 +87,20 @@ export class PacienteService {
       );
     }
     return this.pacienteRepository.delete({ id });
+  }
+
+  async findAnalisisPaciente(pacienteID: number) {
+    const pacienteAnalisis = await this.analalisisRepository.find({
+      where: { pacienteID },
+      relations: ['paciente'],
+    });
+    if (pacienteAnalisis.length == 0) {
+      return new HttpException(
+        'No se encontro el analisis del paciente',
+        HttpStatus.NOT_FOUND,
+      );
+    }
+    console.log(pacienteAnalisis);
+    return pacienteAnalisis;
   }
 }
