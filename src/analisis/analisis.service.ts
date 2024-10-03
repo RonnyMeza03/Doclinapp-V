@@ -18,14 +18,14 @@ export class AnalisisService {
     const pacienteEncontrado = await this.pacienteService.findOne(
       createAnalisiDto.pacienteID,
     );
-    if (!pacienteEncontrado) {
+    if (!pacienteEncontrado || pacienteEncontrado instanceof HttpException) {
       return new HttpException(
         'No se encontro al paciente',
         HttpStatus.NOT_FOUND,
       );
     }
 
-    console.log(createAnalisiDto);
+    console.log(pacienteEncontrado.getNombre);
 
     // Accede a los atributos de createAnalisiDto
     const nuevoAnalisis = new Analisi(
@@ -44,6 +44,7 @@ export class AnalisisService {
       createAnalisiDto.colesterol,
       createAnalisiDto.diastolica,
       createAnalisiDto.cmAltura,
+      0,
       createAnalisiDto.pacienteID,
       0, //createAnalisiDto.analisisHipertension,
       0, //createAnalisiDto.analisisHiperlipidemia,
@@ -54,13 +55,24 @@ export class AnalisisService {
       0, //createAnalisiDto.analisisArterial
     );
 
-    //nuevoAnalisis.setAnalisisHipertension(nuevoAnalisis.analizarHipertension())
-    //nuevoAnalisis.setAnalisisHiperlipidemia(nuevoAnalisis.analizarHiperlipidemia())
-    //nuevoAnalisis.setAnalisisCoronaria(nuevoAnalisis.analizarCoronaria())
-    //nuevoAnalisis.setAnalsisCongenita(nuevoAnalisis.analizarCongenita())
-    //nuevoAnalisis.setAnalisisCerebrovascular(nuevoAnalisis.analizarCerebrovascular())
-    //nuevoAnalisis.setAnalisisDiabetes2(nuevoAnalisis.analizarDiabetes2())
-    //nuevoAnalisis.setAnalisisArterial(nuevoAnalisis.analizarAreterial())
+    nuevoAnalisis.setEdad(
+      nuevoAnalisis.calcularEdadPaciente(
+        pacienteEncontrado.getFechaNacimiento(),
+      ),
+    );
+    nuevoAnalisis.setAnalisisHipertension(nuevoAnalisis.analizarHipertension());
+    nuevoAnalisis.setAnalisisHiperlipidemia(
+      nuevoAnalisis.analizarHiperlipidemia(),
+    );
+    nuevoAnalisis.setAnalisisCoronaria(nuevoAnalisis.analizarCoronaria());
+    nuevoAnalisis.setAnalisisCongenita(nuevoAnalisis.analizarCongenita());
+    nuevoAnalisis.setAnalisisCerebrovascular(
+      nuevoAnalisis.analizarCerebrovascular(),
+    );
+    nuevoAnalisis.setAnalisisDiabetes2(nuevoAnalisis.analizarDiabetes2());
+    nuevoAnalisis.setAnalisisArterial(
+      nuevoAnalisis.analizarArterial(pacienteEncontrado.getFechaNacimiento()),
+    );
 
     // Guarda el nuevo análisis en el repositorio
     const nuevoAnalisisPaciente = this.analisisRepository.create(nuevoAnalisis);

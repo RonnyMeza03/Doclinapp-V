@@ -6,6 +6,8 @@ export class CreatePacienteDto {
   direccion: string;
   telefono: string;
   correo: string;
+  aplicacionID: number;
+  usuarioID: number;
   /*
       sistolica: number
       ldl: number
@@ -23,6 +25,4 @@ export class CreatePacienteDto {
       diastolica: number
       altura: number
       */
-  aplicacionID: number;
-  usuarioID: number;
 }

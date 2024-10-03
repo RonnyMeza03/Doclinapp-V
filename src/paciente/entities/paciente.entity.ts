@@ -55,6 +55,9 @@ export class Paciente {
   @OneToMany(() => Analisi, (Analisi) => Analisi.pacienteID)
   public analisis: Analisi[];
 
+  @Column({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' })
+  public createdAt: Date;
+
   constructor(
     nombre: string,
     apellido: string,
