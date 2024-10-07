@@ -1,11 +1,11 @@
 export class CreateUsuarioDto {
-  nombreUsuario: string;
-  nombre: string;
-  apellido: string;
-  contrasena: string;
-  correo: string;
-  telefono: number;
-  rol: string;
-  fechaNacimiento: Date;
+  email: string;
+  email_verified: boolean;
+  family_name: string;
+  given_name: string;
+  name: string;
+  nickname: string;
+  picture: string;
+  sub: string;
   aplicacionID: number;
 }

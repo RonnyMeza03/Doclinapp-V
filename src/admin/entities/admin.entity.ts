@@ -5,25 +5,27 @@ import { Entity, ChildEntity } from 'typeorm';
 @ChildEntity()
 export class Admin extends Usuarios {
   constructor(
-    nombreUsuario: string,
-    nombre: string,
-    apellido: string,
-    contrasena: string,
-    correo: string,
-    telefono: number,
-    rol: string,
-    fechaNacimiento: Date,
+    name: string,
+    nickname: string,
+    sub: string,
+    email: string,
+    email_verified: boolean,
+    family_name: string,
+    given_name: string,
+    picture: string,
+    aplicacionID: number,
   ) {
     // Llamamos al constructor de la clase padre (Usuarios)
     super(
-      nombreUsuario,
-      nombre,
-      apellido,
-      contrasena,
-      correo,
-      telefono,
-      rol,
-      fechaNacimiento,
+      name,
+      nickname,
+      sub,
+      email,
+      email_verified,
+      family_name,
+      given_name,
+      picture,
+      aplicacionID,
     );
   }
 

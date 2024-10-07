@@ -35,7 +35,7 @@ export class UsuariosService {
     // es asincrono porque necesita consultar a la base de datos para obtener el usuario encontrado
     const usuarioEncontrado = await this.usuarioRepository.findOne({
       where: {
-        nombreUsuario: usuario.nombreUsuario,
+        nickname: usuario.nickname,
       },
     });
 

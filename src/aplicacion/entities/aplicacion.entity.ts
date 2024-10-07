@@ -22,7 +22,7 @@ export class Aplicacion {
   @Column()
   private pais: string;
 
-  @OneToMany(() => Usuarios, (Usuarios) => Usuarios.getNombreUsuario)
+  @OneToMany(() => Usuarios, (Usuarios) => Usuarios.nickname)
   usuarios: Usuarios[];
 
   @OneToMany(() => Paciente, (Paciente) => Paciente.aplicacionID)

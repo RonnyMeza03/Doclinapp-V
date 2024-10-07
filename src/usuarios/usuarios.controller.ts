@@ -20,6 +20,7 @@ export class UsuariosController {
   @Post()
   //@Body= datos que vienen desde el cliente
   create(@Body() createUsuarioDto: CreateUsuarioDto) {
+    console.log(createUsuarioDto);
     return this.usuariosService.createUsuario(createUsuarioDto);
   }
 

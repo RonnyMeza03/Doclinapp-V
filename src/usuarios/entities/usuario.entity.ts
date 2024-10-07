@@ -1,13 +1,13 @@
+import { Aplicacion } from 'src/aplicacion/entities/aplicacion.entity';
 import { Paciente } from 'src/paciente/entities/paciente.entity';
-import { Aplicacion } from './../../aplicacion/entities/aplicacion.entity';
 import {
   Entity,
-  Column,
   PrimaryGeneratedColumn,
-  JoinColumn,
+  Column,
   ManyToOne,
-  TableInheritance,
   OneToMany,
+  JoinColumn,
+  TableInheritance,
 } from 'typeorm';
 
 @Entity({ name: 'Usuarios' })
@@ -19,34 +19,34 @@ import {
 })
 export abstract class Usuarios {
   @PrimaryGeneratedColumn()
-  public id: number;
-
-  @Column({ unique: true })
-  public nombreUsuario: string;
+  id: number;
 
   @Column()
-  public nombre: string;
+  name: string;
 
   @Column()
-  public apellido: string;
+  nickname: string;
 
   @Column()
-  public contrasena: string;
+  sub: string;
 
   @Column()
-  public correo: string;
+  email: string;
 
   @Column()
-  public telefono: number;
+  email_verified: boolean;
 
   @Column()
-  public rol: string;
+  family_name: string;
 
   @Column()
-  public fechaNacimiento: Date;
+  given_name: string;
+
+  @Column()
+  picture: string;
 
   // Relación ManyToOne con Aplicacion
-  @ManyToOne(() => Aplicacion, (Aplicacion) => Aplicacion.getNombre, {
+  @ManyToOne(() => Aplicacion, (aplicacion) => aplicacion.getNombre, {
     eager: true,
   })
   @JoinColumn({ name: 'aplicacionID' })
@@ -55,112 +55,114 @@ export abstract class Usuarios {
   @Column()
   public aplicacionID: number;
 
-  @OneToMany(() => Paciente, (Paciente) => Paciente.usuarioID)
+  // Relación OneToMany con Paciente
+  @OneToMany(() => Paciente, (paciente) => paciente.usuarioID)
   public pacientes: Paciente[];
 
   @Column({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' })
   public createdAt: Date;
 
+  // Constructor
   constructor(
-    nombreUsuario: string,
-    nombre: string,
-    apellido: string,
-    contrasena: string,
-    correo: string,
-    telefono: number,
-    rol: string,
-    fechaNacimiento: Date,
+    name: string,
+    nickname: string,
+    sub: string,
+    email: string,
+    email_verified: boolean,
+    family_name: string,
+    given_name: string,
+    picture: string,
+    aplicacionID: number,
   ) {
-    this.nombreUsuario = nombreUsuario;
-    this.nombre = nombre;
-    this.apellido = apellido;
-    this.contrasena = contrasena;
-    this.correo = correo;
-    this.telefono = telefono;
-    this.rol = rol;
-    this.fechaNacimiento = fechaNacimiento;
-    this.nombreAplicacion = this.nombreAplicacion;
+    this.name = name;
+    this.nickname = nickname;
+    this.sub = sub;
+    this.email = email;
+    this.email_verified = email_verified;
+    this.family_name = family_name;
+    this.given_name = given_name;
+    this.picture = picture;
+    this.aplicacionID = aplicacionID;
   }
 
-  // Métodos GET
+  // Getters y setters
   public getId(): number {
     return this.id;
   }
 
-  public getNombreUsuario(): string {
-    return this.nombreUsuario;
-  }
-
-  public getNombre(): string {
-    return this.nombre;
-  }
-
-  public getApellido(): string {
-    return this.apellido;
-  }
-
-  public getContrasena(): string {
-    return this.contrasena;
-  }
-
-  public getCorreo(): string {
-    return this.correo;
-  }
-
-  public getTelefono(): number {
-    return this.telefono;
-  }
-
-  public getRol(): string {
-    return this.rol;
-  }
-
-  public getFechaNacimiento(): Date {
-    return this.fechaNacimiento;
-  }
-
-  public getNombreAplicacion(): Aplicacion {
-    return this.nombreAplicacion;
-  }
-
-  // Métodos SET
   public setId(id: number): void {
     this.id = id;
   }
 
-  public setNombreUsuario(nombreUsuario: string): void {
-    this.nombreUsuario = nombreUsuario;
+  public getName(): string {
+    return this.name;
   }
 
-  public setNombre(nombre: string): void {
-    this.nombre = nombre;
+  public setName(name: string): void {
+    this.name = name;
   }
 
-  public setApellido(apellido: string): void {
-    this.apellido = apellido;
+  public getNickname(): string {
+    return this.nickname;
   }
 
-  public setContrasena(contrasena: string): void {
-    this.contrasena = contrasena;
+  public setNickname(nickname: string): void {
+    this.nickname = nickname;
   }
 
-  public setCorreo(correo: string): void {
-    this.correo = correo;
+  public getSub(): string {
+    return this.sub;
   }
 
-  public setTelefono(telefono: number): void {
-    this.telefono = telefono;
+  public setSub(sub: string): void {
+    this.sub = sub;
   }
 
-  public setRol(rol: string): void {
-    this.rol = rol;
+  public getEmail(): string {
+    return this.email;
   }
 
-  public setFechaNacimiento(fechaNacimiento: Date): void {
-    this.fechaNacimiento = fechaNacimiento;
+  public setEmail(email: string): void {
+    this.email = email;
   }
 
-  public setNombreAplicacion(nombreAplicacion: Aplicacion): void {
-    this.nombreAplicacion = nombreAplicacion;
+  public getEmailVerified(): boolean {
+    return this.email_verified;
+  }
+
+  public setEmailVerified(email_verified: boolean): void {
+    this.email_verified = email_verified;
+  }
+
+  public getFamilyName(): string {
+    return this.family_name;
+  }
+
+  public setFamilyName(family_name: string): void {
+    this.family_name = family_name;
+  }
+
+  public getGivenName(): string {
+    return this.given_name;
+  }
+
+  public setGivenName(given_name: string): void {
+    this.given_name = given_name;
+  }
+
+  public getPicture(): string {
+    return this.picture;
+  }
+
+  public setPicture(picture: string): void {
+    this.picture = picture;
+  }
+
+  public getCreatedAt(): Date {
+    return this.createdAt;
+  }
+
+  public setCreatedAt(createdAt: Date): void {
+    this.createdAt = createdAt;
   }
 }

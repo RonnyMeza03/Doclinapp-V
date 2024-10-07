@@ -1,4 +1,3 @@
-import { Aplicacion } from 'src/aplicacion/entities/aplicacion.entity';
 import { Usuarios } from 'src/usuarios/entities/usuario.entity';
 import { Entity, ChildEntity, Column } from 'typeorm';
 
@@ -12,28 +11,29 @@ export class Doctor extends Usuarios {
   private clinicaAfiliada: string;
 
   constructor(
-    nombreUsuario: string,
-    nombre: string,
-    apellido: string,
-    contrasena: string,
-    correo: string,
-    telefono: number,
-    rol: string,
-    fechaNacimiento: Date,
-    aplicacionID: Aplicacion,
+    name: string,
+    nickname: string,
+    sub: string,
+    email: string,
+    email_verified: boolean,
+    family_name: string,
+    given_name: string,
+    picture: string,
+    aplicacionID: number,
     especialidad: string,
     clinicaAfiliada: string,
   ) {
     // Llamamos al constructor de la clase padre (Usuarios)
     super(
-      nombreUsuario,
-      nombre,
-      apellido,
-      contrasena,
-      correo,
-      telefono,
-      rol,
-      fechaNacimiento,
+      name,
+      nickname,
+      sub,
+      email,
+      email_verified,
+      family_name,
+      given_name,
+      picture,
+      aplicacionID,
     );
     this.especialidad = especialidad;
     this.clinicaAfiliada = clinicaAfiliada;

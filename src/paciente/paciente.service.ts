@@ -6,6 +6,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { AplicacionService } from 'src/aplicacion/aplicacion.service';
 import { Analisi } from 'src/analisis/entities/analisi.entity';
+import { Usuarios } from 'src/usuarios/entities/usuario.entity';
 
 @Injectable()
 export class PacienteService {
@@ -14,6 +15,8 @@ export class PacienteService {
     private pacienteRepository: Repository<Paciente>,
     @InjectRepository(Analisi)
     private analalisisRepository: Repository<Analisi>,
+    @InjectRepository(Usuarios)
+    private usuariosRepository: Repository<Usuarios>,
     private aplicacionService: AplicacionService,
   ) {}
 
@@ -29,6 +32,13 @@ export class PacienteService {
         HttpStatus.NOT_FOUND,
       );
     }
+
+    const usuarioID = await this.usuariosRepository.findOne({
+      select: ['id'],
+      where: { sub: createPacienteDto.idAuth0 },
+    });
+
+    createPacienteDto.usuarioID = usuarioID.id;
 
     const nuevoPaciente = this.pacienteRepository.create(createPacienteDto);
     return this.pacienteRepository.save(nuevoPaciente);

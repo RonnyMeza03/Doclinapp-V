@@ -7,6 +7,7 @@ export class CreatePacienteDto {
   telefono: string;
   correo: string;
   aplicacionID: number;
+  idAuth0: string;
   usuarioID: number;
   /*
       sistolica: number
