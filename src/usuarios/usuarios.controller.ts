@@ -48,4 +48,9 @@ export class UsuariosController {
   remove(@Param('id', ParseIntPipe) id: number) {
     return this.usuariosService.remove(+id);
   }
+
+  @Get(':usuarioId/pacientes')
+  async findUsuarioPacientes(@Param('usuarioId') usuarioId: string) {
+    return this.usuariosService.findUsuarioPacientesById(usuarioId);
+  }
 }

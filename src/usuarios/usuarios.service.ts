@@ -5,6 +5,7 @@ import { UpdateUsuarioDto } from './dto/update-usuario.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Usuarios } from './entities/usuario.entity';
 import { Repository } from 'typeorm';
+import { Paciente } from 'src/paciente/entities/paciente.entity';
 
 @Injectable()
 export class UsuariosService {
@@ -17,6 +18,8 @@ export class UsuariosService {
   //Importa la clase, lo convierte en un repositorio de typeORM para poder las consultas de DML (Insert, Delete, Select, Update)
   constructor(
     @InjectRepository(Usuarios) private usuarioRepository: Repository<Usuarios>,
+    @InjectRepository(Paciente)
+    private pacienteRepository: Repository<Paciente>,
     private aplicacionService: AplicacionService,
   ) {}
 
@@ -99,5 +102,33 @@ export class UsuariosService {
       );
     }
     return this.usuarioRepository.delete({ id });
+  }
+
+  async findUsuarioPacientesById(usuarioId: string) {
+    const usuario = await this.usuarioRepository.findOne({
+      select: ['id'],
+      where: {
+        sub: usuarioId,
+      },
+    });
+
+    if (!usuario) {
+      return new HttpException(
+        'No se encontro al usuario',
+        HttpStatus.NOT_FOUND,
+      );
+    }
+
+    const usuarioPacientes = await this.pacienteRepository.find({
+      where: { usuario },
+      relations: ['usuario'],
+    });
+    if (usuarioPacientes.length == 0) {
+      return new HttpException(
+        'No se encontraron pacientes de este usuario',
+        HttpStatus.NOT_FOUND,
+      );
+    }
+    return usuarioPacientes;
   }
 }
