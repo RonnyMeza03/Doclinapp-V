@@ -6,6 +6,7 @@ import { AdminModule } from './admin/admin.module';
 import { PacienteModule } from './paciente/paciente.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AnalisisModule } from './analisis/analisis.module';
+import { PerfilModule } from './perfil/perfil.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { AnalisisModule } from './analisis/analisis.module';
     AdminModule,
     PacienteModule,
     AnalisisModule,
+    PerfilModule,
   ],
 })
 export class AppModule {}

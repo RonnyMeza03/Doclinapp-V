@@ -120,8 +120,8 @@ export class Analisi {
     analisisArterial?: number,
   ) {
     this.sistolica = sistolica;
-    this.ldl = ldl;
-    this.hdl = hdl;
+    this.ldl = ldl; //entre 40 y 60
+    this.hdl = hdl; //
     this.triglicerios = triglicerios;
     this.familiar = familiar;
     this.enfermedades = enfermedades;

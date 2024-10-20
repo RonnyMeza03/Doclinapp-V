@@ -65,8 +65,8 @@ export class PacienteService {
     return pacienteEncontrado;
   }
 
-  update(id: number, updatePacienteDto: UpdatePacienteDto) {
-    const pacienteEncontrado = this.pacienteRepository.findOne({
+  async update(id: number, updatePacienteDto: UpdatePacienteDto) {
+    const pacienteEncontrado = await this.pacienteRepository.findOne({
       where: {
         id,
       },

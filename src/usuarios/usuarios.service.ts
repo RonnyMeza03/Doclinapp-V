@@ -25,11 +25,11 @@ export class UsuariosService {
 
   async createUsuario(usuario: CreateUsuarioDto) {
     //Verificamos que la aplicacion existe
-    const aplicacacionEncontrada = this.aplicacionService.findOne(
+    const aplicacionEncontrada = this.aplicacionService.findOne(
       usuario.aplicacionID,
     );
 
-    if (!aplicacacionEncontrada) {
+    if (!aplicacionEncontrada) {
       return new HttpException(
         'Aplicacion no encontrada',
         HttpStatus.NOT_FOUND,
