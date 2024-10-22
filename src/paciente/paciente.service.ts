@@ -5,18 +5,20 @@ import { Paciente } from './entities/paciente.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { AplicacionService } from 'src/aplicacion/aplicacion.service';
-import { Analisi } from 'src/analisis/entities/analisi.entity';
 import { Usuarios } from 'src/usuarios/entities/usuario.entity';
+import { InjectModel } from '@nestjs/mongoose';
+import { Analisi } from 'src/schemas/analisis.schema';
+import { Model } from 'mongoose';
 
 @Injectable()
 export class PacienteService {
   constructor(
     @InjectRepository(Paciente)
     private pacienteRepository: Repository<Paciente>,
-    @InjectRepository(Analisi)
-    private analalisisRepository: Repository<Analisi>,
     @InjectRepository(Usuarios)
     private usuariosRepository: Repository<Usuarios>,
+    @InjectModel(Analisi.name)
+    private analisisRepository: Model<Analisi>,
     private aplicacionService: AplicacionService,
   ) {}
 
@@ -99,12 +101,11 @@ export class PacienteService {
     return this.pacienteRepository.delete({ id });
   }
 
-  async findAnalisisPaciente(pacienteID: number) {
-    const pacienteAnalisis = await this.analalisisRepository.find({
-      where: { pacienteID },
-      relations: ['paciente'],
+  async findAnalisisPaciente(idPaciente: number) {
+    const pacienteAnalisis = await this.analisisRepository.findOne({
+      pacienteID: idPaciente,
     });
-    if (pacienteAnalisis.length == 0) {
+    if (!pacienteAnalisis) {
       return new HttpException(
         'No se encontro el analisis del paciente',
         HttpStatus.NOT_FOUND,

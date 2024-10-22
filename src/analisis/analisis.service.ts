@@ -2,14 +2,16 @@ import { PacienteService } from './../paciente/paciente.service';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateAnalisiDto } from './dto/create-analisi.dto';
 import { UpdateAnalisiDto } from './dto/update-analisi.dto';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Analisi } from './entities/analisi.entity';
-import { Repository } from 'typeorm';
+import { Analisi } from 'src/schemas/analisis.schema';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+import { Contador, ContadorDocument } from 'src/schemas/contador.schema';
 
 @Injectable()
 export class AnalisisService {
   constructor(
-    @InjectRepository(Analisi) private analisisRepository: Repository<Analisi>,
+    @InjectModel(Analisi.name) private analisisModel: Model<Analisi>,
+    @InjectModel(Contador.name) private contadorModel: Model<ContadorDocument>,
     private pacienteService: PacienteService,
   ) {}
 
@@ -74,22 +76,31 @@ export class AnalisisService {
       nuevoAnalisis.analizarArterial(pacienteEncontrado.getFechaNacimiento()),
     );
 
-    // Guarda el nuevo análisis en el repositorio
-    const nuevoAnalisisPaciente = this.analisisRepository.create(nuevoAnalisis);
-    return this.analisisRepository.save(nuevoAnalisisPaciente);
+    const nuevoId = await this.getNextSequenceValue('analisis');
+    console.log(nuevoId);
+    const nuevoAnalisisPaciente = new this.analisisModel({
+      ...nuevoAnalisis,
+      id: nuevoId,
+    });
+    return nuevoAnalisisPaciente.save();
   }
 
   findAll() {
-    return this.analisisRepository.find({
-      relations: ['paciente'],
-    });
+    return this.analisisModel.find();
+  }
+
+  async getNextSequenceValue(sequenceName: string): Promise<number> {
+    const contador = await this.contadorModel.findOneAndUpdate(
+      { sequenceName },
+      { $inc: { seq: 1 } },
+      { new: true, upsert: true },
+    );
+    return contador.seq;
   }
 
   async findOne(id: number) {
-    const analisisEncontrado = await this.analisisRepository.findOne({
-      where: {
-        id,
-      },
+    const analisisEncontrado = await this.analisisModel.findOne({
+      id: id,
     });
     if (!analisisEncontrado) {
       return new HttpException(

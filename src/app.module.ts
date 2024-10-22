@@ -7,9 +7,11 @@ import { PacienteModule } from './paciente/paciente.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AnalisisModule } from './analisis/analisis.module';
 import { PerfilModule } from './perfil/perfil.module';
+import { MongooseModule } from '@nestjs/mongoose';
 
 @Module({
   imports: [
+    MongooseModule.forRoot('mongodb://localhost:27017/Doclinapp'),
     TypeOrmModule.forRoot({
       type: 'mysql',
       host: 'localhost',

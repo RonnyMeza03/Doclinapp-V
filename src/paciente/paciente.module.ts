@@ -4,12 +4,14 @@ import { PacienteController } from './paciente.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Paciente } from './entities/paciente.entity';
 import { AplicacionModule } from 'src/aplicacion/aplicacion.module';
-import { Analisi } from 'src/analisis/entities/analisi.entity';
 import { Usuarios } from 'src/usuarios/entities/usuario.entity';
+import { MongooseModule } from '@nestjs/mongoose';
+import { Analisi, AnalisisSchema } from 'src/schemas/analisis.schema';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Paciente, Analisi, Usuarios]),
+    MongooseModule.forFeature([{ name: Analisi.name, schema: AnalisisSchema }]),
+    TypeOrmModule.forFeature([Paciente, Usuarios]),
     AplicacionModule,
   ],
   controllers: [PacienteController],
