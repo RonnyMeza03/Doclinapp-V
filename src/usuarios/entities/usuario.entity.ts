@@ -1,5 +1,6 @@
 import { Aplicacion } from 'src/aplicacion/entities/aplicacion.entity';
 import { Paciente } from 'src/paciente/entities/paciente.entity';
+import { Perfil } from 'src/perfil/entities/perfil.entity';
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -8,6 +9,7 @@ import {
   OneToMany,
   JoinColumn,
   TableInheritance,
+  OneToOne,
 } from 'typeorm';
 
 @Entity({ name: 'Usuarios' })
@@ -61,6 +63,9 @@ export abstract class Usuarios {
 
   @Column({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' })
   public createdAt: Date;
+
+  @OneToOne(() => Perfil, (perfil) => perfil.usuario)
+  perfil: Perfil;
 
   // Constructor
   constructor(

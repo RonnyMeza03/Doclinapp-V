@@ -53,4 +53,9 @@ export class UsuariosController {
   async findUsuarioPacientes(@Param('usuarioId') usuarioId: string) {
     return this.usuariosService.findUsuarioPacientesById(usuarioId);
   }
+
+  @Get(':idAuth0/perfil')
+  async findUsuarioPerfil(@Param('idAuth0') idAuth0: string) {
+    return this.usuariosService.findOneUsuarioIdAuth0(idAuth0);
+  }
 }

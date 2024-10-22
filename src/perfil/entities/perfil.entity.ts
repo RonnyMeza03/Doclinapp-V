@@ -15,28 +15,21 @@ export class Perfil {
   @Column({ nullable: true })
   private rol: string;
 
-  @Column()
+  // false= 0 true= 1
+  @Column('tinyint', { width: 1, default: 0 })
   private premium: boolean;
 
-  @OneToOne(() => Usuarios, (usuario) => usuario.name, {
+  @OneToOne(() => Usuarios, (usuario) => usuario.perfil, {
     eager: true,
+    nullable: false,
   })
-  @JoinColumn()
-  public nombreUsuario: Usuarios;
+  @JoinColumn({ name: 'usuarioId' })
+  public usuario: Usuarios;
 
-  @Column()
-  public usuarioId: number;
-
-  constructor(
-    rol: string,
-    premium: boolean,
-    nombreUsuario: Usuarios,
-    usuarioId: number,
-  ) {
+  constructor(rol: string, premium: boolean, usuario: Usuarios) {
     this.rol = rol;
     this.premium = premium;
-    this.nombreUsuario = nombreUsuario;
-    this.usuarioId = usuarioId;
+    this.usuario = usuario;
   }
 
   // Getter and Setter for rol
@@ -57,21 +50,12 @@ export class Perfil {
     this.premium = premium;
   }
 
-  // Getter and Setter for nombreUsuario
-  public getNombreUsuario(): Usuarios {
-    return this.nombreUsuario;
+  // Getter and Setter for usuario
+  public getUsuario(): Usuarios {
+    return this.usuario;
   }
 
-  public setNombreUsuario(nombreUsuario: Usuarios): void {
-    this.nombreUsuario = nombreUsuario;
-  }
-
-  // Getter and Setter for usuarioId
-  public getUsuarioId(): number {
-    return this.usuarioId;
-  }
-
-  public setUsuarioId(usuarioId: number): void {
-    this.usuarioId = usuarioId;
+  public setUsuario(usuario: Usuarios): void {
+    this.usuario = usuario;
   }
 }

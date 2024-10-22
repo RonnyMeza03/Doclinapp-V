@@ -26,7 +26,7 @@ export class PerfilService {
       );
     }
 
-    perfil.usuarioId = usuarioIdEncontrado.id;
+    perfil.usuario = usuarioIdEncontrado;
 
     const nuevoPerfil = this.perfilRepository.create(perfil);
     return this.perfilRepository.save(nuevoPerfil);
@@ -34,7 +34,7 @@ export class PerfilService {
 
   findAll() {
     return this.perfilRepository.find({
-      relations: ['nombreUsuario'],
+      relations: ['usuario'],
     });
   }
 
@@ -71,5 +71,20 @@ export class PerfilService {
 
   remove(id: number) {
     return `This action removes a #${id} perfil`;
+  }
+
+  async findPerfilUsuario(idUsuario: number) {
+    const perfilUsuario = this.perfilRepository.findOne({
+      where: {
+        usuario: { id: idUsuario },
+      },
+    });
+    if (!perfilUsuario) {
+      return new HttpException(
+        'No se encontro el perfil',
+        HttpStatus.NOT_FOUND,
+      );
+    }
+    return perfilUsuario;
   }
 }

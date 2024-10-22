@@ -1,3 +1,4 @@
+import { PerfilService } from './../perfil/perfil.service';
 import { AplicacionService } from 'src/aplicacion/aplicacion.service';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateUsuarioDto } from './dto/create-usuario.dto';
@@ -20,6 +21,7 @@ export class UsuariosService {
     @InjectRepository(Usuarios) private usuarioRepository: Repository<Usuarios>,
     @InjectRepository(Paciente)
     private pacienteRepository: Repository<Paciente>,
+    private PerfilService: PerfilService,
     private aplicacionService: AplicacionService,
   ) {}
 
@@ -68,7 +70,32 @@ export class UsuariosService {
       );
     }
 
-    return usuarioEncontrado;
+    const perfil = this.PerfilService.findPerfilUsuario(usuarioEncontrado.id);
+
+    if (!perfil) {
+      return { error: 'no se encontro perfil' };
+    }
+
+    return [usuarioEncontrado, perfil];
+  }
+
+  async findOneUsuarioIdAuth0(idAuth0: string) {
+    const usuarioEncontrado = await this.usuarioRepository.findOne({
+      where: {
+        sub: idAuth0,
+      },
+    });
+    console.log(usuarioEncontrado);
+    if (!usuarioEncontrado) {
+      return new HttpException(
+        'No se encotro al usuario',
+        HttpStatus.NOT_FOUND,
+      );
+    }
+    const perfilUsuario = await this.PerfilService.findPerfilUsuario(
+      usuarioEncontrado.id,
+    );
+    return perfilUsuario;
   }
 
   async update(id: number, updateUsuarioDto: UpdateUsuarioDto) {
