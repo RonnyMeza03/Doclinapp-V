@@ -1,3 +1,4 @@
+import { UpdateUsuarioDto } from './../usuarios/dto/update-usuario.dto';
 import {
   Controller,
   Get,
@@ -10,14 +11,36 @@ import {
 import { AplicacionService } from './aplicacion.service';
 import { CreateAplicacionDto } from './dto/create-aplicacion.dto';
 import { UpdateAplicacionDto } from './dto/update-aplicacion.dto';
+import { UsuariosService } from 'src/usuarios/usuarios.service';
 
 @Controller('aplicacion')
 export class AplicacionController {
-  constructor(private readonly aplicacionService: AplicacionService) {}
+  constructor(
+    private readonly aplicacionService: AplicacionService,
+    private readonly usuariosService: UsuariosService,
+  ) {}
 
   @Post()
-  create(@Body() createAplicacionDto: CreateAplicacionDto) {
-    return this.aplicacionService.create(createAplicacionDto);
+  async create(
+    @Body() createAplicacionDto: CreateAplicacionDto,
+    updateUsuario: UpdateUsuarioDto = {},
+  ) {
+    await this.aplicacionService.create(createAplicacionDto);
+    const listaAplicaciones = await this.aplicacionService.findAll();
+    const ultimaAplicacionId = listaAplicaciones[listaAplicaciones.length - 1];
+    console.log(ultimaAplicacionId);
+    updateUsuario.aplicacionID = ultimaAplicacionId.id;
+    updateUsuario.nombreAplicacion = ultimaAplicacionId;
+    console.log(updateUsuario.aplicacionID);
+    const usuario = await this.usuariosService.updateByAuth0(
+      createAplicacionDto.idAuth0,
+      updateUsuario,
+    );
+    return {
+      message: 'Aplicación creada y usuario actualizado con éxito',
+      ultimaAplicacionId,
+      usuario,
+    };
   }
 
   @Get()

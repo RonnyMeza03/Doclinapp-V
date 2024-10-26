@@ -4,4 +4,5 @@ export class CreateAplicacionDto {
   correo: string;
   direccion: string;
   pais: string;
+  idAuth0: string;
 }

@@ -158,4 +158,22 @@ export class UsuariosService {
     }
     return usuarioPacientes;
   }
+
+  async updateByAuth0(idAuth0: string, updateUsuarioDto: UpdateUsuarioDto) {
+    const usuarioEncontrado = await this.usuarioRepository.findOne({
+      where: {
+        sub: idAuth0,
+      },
+    });
+
+    if (!usuarioEncontrado) {
+      return new HttpException(
+        'No se encontro al Usuario',
+        HttpStatus.NOT_FOUND,
+      );
+    }
+    const updateUsuario = Object.assign(usuarioEncontrado, updateUsuarioDto);
+    console.log(updateUsuario);
+    return this.usuarioRepository.save(updateUsuario);
+  }
 }

@@ -13,13 +13,13 @@ export class Aplicacion {
   @Column({ unique: true })
   private nombreClinica: string;
 
-  @Column()
+  @Column({ nullable: true })
   private correo: string;
 
-  @Column()
+  @Column({ nullable: true })
   private direccion: string;
 
-  @Column()
+  @Column({ nullable: true })
   private pais: string;
 
   @OneToMany(() => Usuarios, (Usuarios) => Usuarios.nickname)

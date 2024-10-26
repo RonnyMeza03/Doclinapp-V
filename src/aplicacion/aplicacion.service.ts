@@ -32,7 +32,7 @@ export class AplicacionService {
       return new HttpException('Aplicacion Ya existente', HttpStatus.CONFLICT);
     }
 
-    return this.aplicacionRepository.save(aplicacionEncontrada);
+    return this.aplicacionRepository.save(aplicacion);
   }
 
   findAll() {
