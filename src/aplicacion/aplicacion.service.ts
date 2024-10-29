@@ -46,10 +46,7 @@ export class AplicacionService {
       },
     });
     if (!aplicacionEncontrada) {
-      return new HttpException(
-        'Aplicacion no encontrada',
-        HttpStatus.NOT_FOUND,
-      );
+      throw new HttpException('Aplicacion no encontrada', HttpStatus.NOT_FOUND);
     }
     return aplicacionEncontrada;
   }

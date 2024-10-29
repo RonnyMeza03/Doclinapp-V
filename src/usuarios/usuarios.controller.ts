@@ -44,6 +44,11 @@ export class UsuariosController {
     return this.usuariosService.update(+id, updateUsuarioDto);
   }
 
+  @Patch()
+  updateGrupoUsuario(@Body() updateUsuarioDto: UpdateUsuarioDto) {
+    return this.usuariosService.updateGrupoUsuario(updateUsuarioDto);
+  }
+
   @Delete(':id')
   remove(@Param('id', ParseIntPipe) id: number) {
     return this.usuariosService.remove(+id);

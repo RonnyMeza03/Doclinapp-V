@@ -26,8 +26,8 @@ export class AnalisisController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.analisisService.findOne(+id);
+  findAllAnalisis(@Param('id') id: string) {
+    return this.analisisService.findAllAnalisis(+id);
   }
 
   @Patch(':id')

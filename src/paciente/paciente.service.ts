@@ -35,12 +35,12 @@ export class PacienteService {
       );
     }
 
-    const usuarioID = await this.usuariosRepository.findOne({
-      select: ['id'],
+    const usuario = await this.usuariosRepository.findOne({
       where: { sub: createPacienteDto.idAuth0 },
     });
 
-    createPacienteDto.usuarioID = usuarioID.id;
+    createPacienteDto.usuarioID = usuario.id;
+    createPacienteDto.aplicacionID = usuario.aplicacionID;
 
     const nuevoPaciente = this.pacienteRepository.create(createPacienteDto);
     return this.pacienteRepository.save(nuevoPaciente);

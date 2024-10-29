@@ -89,6 +89,14 @@ export class AnalisisService {
     return this.analisisModel.find();
   }
 
+  async findAllAnalisis(id: number) {
+    const analisisEncontrado = await this.analisisModel.find({
+      pacienteID: id,
+    });
+    console.log(analisisEncontrado);
+    return analisisEncontrado;
+  }
+
   async getNextSequenceValue(sequenceName: string): Promise<number> {
     const contador = await this.contadorModel.findOneAndUpdate(
       { sequenceName },
@@ -100,7 +108,7 @@ export class AnalisisService {
 
   async findOne(id: number) {
     const analisisEncontrado = await this.analisisModel.findOne({
-      id: id,
+      pacienteID: id,
     });
     if (!analisisEncontrado) {
       return new HttpException(
@@ -108,6 +116,9 @@ export class AnalisisService {
         HttpStatus.NOT_FOUND,
       );
     }
+
+    console.log(analisisEncontrado);
+
     return analisisEncontrado;
   }
 

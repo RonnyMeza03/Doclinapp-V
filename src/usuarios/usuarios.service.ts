@@ -115,6 +115,33 @@ export class UsuariosService {
     return this.usuarioRepository.save(updateUsuario);
   }
 
+  async updateGrupoUsuario(updateUsuarioDto: UpdateUsuarioDto) {
+    const usuarioEncontrado = await this.usuarioRepository.findOne({
+      where: {
+        email: updateUsuarioDto.email,
+      },
+    });
+
+    console.log(usuarioEncontrado);
+
+    if (!usuarioEncontrado) {
+      throw new HttpException(
+        'No se encontro al Usuario',
+        HttpStatus.NOT_FOUND,
+      );
+    }
+
+    const aplicacionEncontrada = await this.aplicacionService.findOne(
+      updateUsuarioDto.aplicacionID,
+    );
+
+    usuarioEncontrado.aplicacionID = updateUsuarioDto.aplicacionID;
+    usuarioEncontrado.nombreAplicacion = aplicacionEncontrada;
+
+    const updateUsuario = Object.assign(usuarioEncontrado, updateUsuarioDto);
+    return this.usuarioRepository.save(updateUsuario);
+  }
+
   async remove(id: number) {
     const usuarioEncontrado = await this.usuarioRepository.findOne({
       where: {
