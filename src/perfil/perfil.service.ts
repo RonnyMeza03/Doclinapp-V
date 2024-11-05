@@ -69,6 +69,28 @@ export class PerfilService {
     return this.perfilRepository.save(actualizarPerfil);
   }
 
+  async updateByAuth0(updatePerfilDto: UpdatePerfilDto) {
+    const usuarioIdEncontrado = await this.usuarioRepository.findOne({
+      where: {
+        sub: updatePerfilDto.idAuth0,
+      },
+    });
+    const perfilEncontrado = await this.perfilRepository.findOne({
+      where: {
+        usuario: { id: usuarioIdEncontrado.id },
+      },
+    });
+    if (!perfilEncontrado) {
+      return new HttpException(
+        'No se encontro al paciente',
+        HttpStatus.NOT_FOUND,
+      );
+    }
+    const actualizarPerfil = Object.assign(perfilEncontrado, updatePerfilDto);
+    console.log(actualizarPerfil);
+    return this.perfilRepository.save(actualizarPerfil);
+  }
+
   remove(id: number) {
     return `This action removes a #${id} perfil`;
   }
