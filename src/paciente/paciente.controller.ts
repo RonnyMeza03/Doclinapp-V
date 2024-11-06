@@ -6,14 +6,21 @@ import {
   Patch,
   Param,
   Delete,
+  HttpException,
+  HttpStatus,
 } from '@nestjs/common';
 import { PacienteService } from './paciente.service';
 import { CreatePacienteDto } from './dto/create-paciente.dto';
 import { UpdatePacienteDto } from './dto/update-paciente.dto';
+import { scriptPacienteDto } from './dto/script-paciente.dto';
+import { AnalisisService } from 'src/analisis/analisis.service';
 
 @Controller('paciente')
 export class PacienteController {
-  constructor(private readonly pacienteService: PacienteService) {}
+  constructor(
+    private readonly pacienteService: PacienteService,
+    private readonly analisisService: AnalisisService,
+  ) {}
 
   @Post()
   create(@Body() createPacienteDto: CreatePacienteDto) {
@@ -46,5 +53,26 @@ export class PacienteController {
   @Get(':pacienteID/analisis')
   async getPacienteAnalisis(@Param('pacienteID') pacienteID: number) {
     return this.pacienteService.findAnalisisPaciente(pacienteID);
+  }
+
+  @Post('/script')
+  async createPacienteScript(@Body() script: scriptPacienteDto) {
+    let i: number = 0;
+    while (i < script.totalPacientes) {
+      const nuevoPaciente = await this.pacienteService.createPacienteScript(
+        script.fecha,
+        script.idAuth0,
+      );
+
+      console.log(nuevoPaciente.id);
+
+      // Ahora podemos usar el id directamente
+      await this.analisisService.createAnalisisScript(nuevoPaciente.id);
+      i++;
+    }
+
+    return {
+      message: `${script.totalPacientes} pacientes y análisis creados con éxito.`,
+    };
   }
 }

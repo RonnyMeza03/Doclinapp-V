@@ -1,7 +1,7 @@
+import { Paciente } from 'src/paciente/entities/paciente.entity';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreatePacienteDto } from './dto/create-paciente.dto';
 import { UpdatePacienteDto } from './dto/update-paciente.dto';
-import { Paciente } from './entities/paciente.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { AplicacionService } from 'src/aplicacion/aplicacion.service';
@@ -113,5 +113,140 @@ export class PacienteService {
     }
     console.log(pacienteAnalisis);
     return pacienteAnalisis;
+  }
+
+  async createPacienteScript(
+    fecha: number,
+    idAuth0: string,
+  ): Promise<Paciente> {
+    const createPacienteDto: CreatePacienteDto = {
+      nombre: '',
+      apellido: '',
+      fechaNacimiento: new Date(),
+      sexo: '',
+      direccion: '',
+      telefono: '',
+      correo: '',
+      aplicacionID: 0,
+      idAuth0: '',
+      usuarioID: 0,
+      createdAt: '2020-11-06 19:45:50',
+    };
+    const nombresHombres = [
+      'Carlos',
+      'Juan',
+      'Luis',
+      'Miguel',
+      'José',
+      'Andrés',
+      'Pedro',
+      'Santiago',
+      'Fernando',
+      'Javier',
+      'Ricardo',
+      'Alejandro',
+      'Hugo',
+      'Gabriel',
+      'Manuel',
+      'Roberto',
+      'Diego',
+      'Pablo',
+      'Sebastián',
+      'Enrique',
+    ];
+
+    const nombresMujeres = [
+      'María',
+      'Ana',
+      'Laura',
+      'Isabel',
+      'Sofía',
+      'Lucía',
+      'Carla',
+      'Marta',
+      'Paula',
+      'Elena',
+      'Rosa',
+      'Patricia',
+      'Verónica',
+      'Teresa',
+      'Gabriela',
+      'Sara',
+      'Lorena',
+      'Claudia',
+      'Beatriz',
+      'Carolina',
+    ];
+
+    const apellidos = [
+      'García',
+      'Martínez',
+      'López',
+      'Hernández',
+      'González',
+      'Pérez',
+      'Rodríguez',
+      'Sánchez',
+      'Ramírez',
+      'Cruz',
+      'Flores',
+      'Jiménez',
+      'Morales',
+      'Ortiz',
+      'Gómez',
+      'Vargas',
+      'Castro',
+      'Díaz',
+      'Torres',
+      'Ramos',
+    ];
+
+    const genero = Math.floor(Math.random() * 2);
+
+    const nombre =
+      genero === 0
+        ? nombresHombres[Math.floor(Math.random() * nombresHombres.length)]
+        : nombresMujeres[Math.floor(Math.random() * nombresMujeres.length)];
+
+    createPacienteDto.nombre = nombre;
+    createPacienteDto.sexo = genero === 0 ? 'masculino' : 'femenino';
+
+    const apellido = apellidos[Math.floor(Math.random() * apellidos.length)];
+
+    createPacienteDto.apellido = apellido;
+
+    // Definir el rango de la fecha de nacimiento
+    const fechaMaxima = new Date();
+    fechaMaxima.setFullYear(fechaMaxima.getFullYear() - 15); // Mínimo 15 años atrás
+
+    const fechaMinima = new Date(fechaMaxima);
+    fechaMinima.setFullYear(fechaMinima.getFullYear() - 85); // Máximo 85 años atrás
+
+    // Generar una fecha aleatoria entre fechaMinima y fechaMaxima
+    const fechaNacimientoTimestamp =
+      Math.floor(
+        Math.random() * (fechaMaxima.getTime() - fechaMinima.getTime()),
+      ) + fechaMinima.getTime();
+
+    const fechaNacimiento = new Date(fechaNacimientoTimestamp);
+
+    // Asignar la fecha de nacimiento al DTO
+    createPacienteDto.fechaNacimiento = fechaNacimiento;
+    createPacienteDto.direccion = 'direccion de visualizacion';
+    createPacienteDto.telefono = '123';
+    createPacienteDto.correo = 'email de visualizacion';
+
+    const usuarioId = await this.usuariosRepository.findOne({
+      where: {
+        sub: idAuth0,
+      },
+    });
+
+    createPacienteDto.usuarioID = usuarioId.id;
+    createPacienteDto.aplicacionID = usuarioId.aplicacionID;
+    createPacienteDto.idAuth0 = idAuth0;
+
+    const nuevoPaciente = await this.pacienteRepository.save(createPacienteDto);
+    return nuevoPaciente;
   }
 }

@@ -472,7 +472,6 @@ export class Analisi {
       trigliceridos.resultado * 0.2 +
       hdl * 0.1;
 
-    console.log('hiperlipidemia: ' + resultado);
     return parseFloat(resultado.toFixed(2));
   }
   public analizarCoronaria(): number {

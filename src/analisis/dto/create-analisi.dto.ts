@@ -1,18 +1,18 @@
 export class CreateAnalisiDto {
-  readonly sistolica: number;
-  readonly ldl: number;
-  readonly hdl: number;
-  readonly triglicerios: number;
-  readonly familiar: string;
-  readonly enfermedades: Array<string>;
-  readonly habitoFumar: string;
-  readonly habitoAlcohol: string;
-  readonly habitoDieta: string;
-  readonly horasActividadSemanal: number;
-  readonly masaCorporalKg: number;
-  readonly glucosa: number;
-  readonly colesterol: number;
-  readonly diastolica: number;
-  readonly cmAltura: number;
-  readonly pacienteID: number;
+  sistolica: number;
+  ldl: number;
+  hdl: number;
+  triglicerios: number;
+  familiar: string;
+  enfermedades: Array<string>;
+  habitoFumar: string;
+  habitoAlcohol: string;
+  habitoDieta: string;
+  horasActividadSemanal: number;
+  masaCorporalKg: number;
+  glucosa: number;
+  colesterol: number;
+  diastolica: number;
+  cmAltura: number;
+  pacienteID: number;
 }
