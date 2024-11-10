@@ -15,4 +15,5 @@ export class CreateAnalisiDto {
   diastolica: number;
   cmAltura: number;
   pacienteID: number;
+  createdAt?: string;
 }

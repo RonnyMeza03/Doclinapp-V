@@ -78,6 +78,9 @@ export class Analisi {
   @Prop()
   public pacienteID: number;
 
+  @Prop()
+  cretaedAt: Date;
+
   constructor(
     sistolica: number,
     ldl: number,
@@ -104,6 +107,7 @@ export class Analisi {
     analisisCerebrovascular?: number,
     analisisDiabetes2?: number,
     analisisArterial?: number,
+    createdAt?: Date,
   ) {
     this.sistolica = sistolica;
     this.ldl = ldl; //entre 40 y 60
@@ -130,6 +134,7 @@ export class Analisi {
     this.analisisCerebrovascular = analisisCerebrovascular ?? 0;
     this.analisisDiabetes2 = analisisDiabetes2 ?? 0;
     this.analisisArterial = analisisArterial ?? 0;
+    this.cretaedAt = createdAt;
   }
 
   // Getters and Setters

@@ -64,10 +64,13 @@ export class PacienteController {
         script.idAuth0,
       );
 
-      console.log(nuevoPaciente.id);
+      console.log(nuevoPaciente.id, script.fecha);
 
       // Ahora podemos usar el id directamente
-      await this.analisisService.createAnalisisScript(nuevoPaciente.id);
+      await this.analisisService.createAnalisisScript(
+        nuevoPaciente.id,
+        script.fecha,
+      );
       i++;
     }
 

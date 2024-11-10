@@ -130,7 +130,7 @@ export class PacienteService {
       aplicacionID: 0,
       idAuth0: '',
       usuarioID: 0,
-      createdAt: '2020-11-06 19:45:50',
+      createdAt: `${fecha}-11-06 19:45:50`,
     };
     const nombresHombres = [
       'Carlos',

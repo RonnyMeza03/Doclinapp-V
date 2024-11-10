@@ -55,6 +55,7 @@ export class AnalisisService {
       0, //createAnalisiDto.analisisCerebrovascular,
       0, //createAnalisiDto.analisisDiabetes2,
       0, //createAnalisiDto.analisisArterial
+      new Date(),
     );
 
     nuevoAnalisis.setEdad(
@@ -142,7 +143,7 @@ export class AnalisisService {
     return analisisEncontrado;
   }
 
-  async createAnalisisScript(pacienteId: number) {
+  async createAnalisisScript(pacienteId: number, fecha: number) {
     const analisis: CreateAnalisiDto = {
       sistolica: 0,
       ldl: 0,
@@ -160,6 +161,7 @@ export class AnalisisService {
       diastolica: 0,
       cmAltura: 0,
       pacienteID: pacienteId,
+      createdAt: `${fecha}-11-06 19:45:50`,
     };
 
     analisis.sistolica = Math.floor(Math.random() * (120 - 70 + 1)) + 70;
@@ -238,6 +240,7 @@ export class AnalisisService {
       0,
       0,
       0,
+      new Date(analisis.createdAt),
     );
 
     nuevoAnalisis.setEdad(
