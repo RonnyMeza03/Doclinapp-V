@@ -10,7 +10,7 @@ export class CreatePacienteDto {
   idAuth0: string;
   usuarioID: number;
   createdAt?: string;
-
+  idPerfil?: number;
   /*
       sistolica: number
       ldl: number

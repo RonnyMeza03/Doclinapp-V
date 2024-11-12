@@ -9,6 +9,7 @@ import { Usuarios } from 'src/usuarios/entities/usuario.entity';
 import { InjectModel } from '@nestjs/mongoose';
 import { Analisi } from 'src/schemas/analisis.schema';
 import { Model } from 'mongoose';
+import { Perfil } from 'src/perfil/entities/perfil.entity';
 
 @Injectable()
 export class PacienteService {
@@ -17,6 +18,8 @@ export class PacienteService {
     private pacienteRepository: Repository<Paciente>,
     @InjectRepository(Usuarios)
     private usuariosRepository: Repository<Usuarios>,
+    @InjectRepository(Perfil)
+    private perfilRepository: Repository<Perfil>,
     @InjectModel(Analisi.name)
     private analisisRepository: Model<Analisi>,
     private aplicacionService: AplicacionService,
@@ -248,5 +251,39 @@ export class PacienteService {
 
     const nuevoPaciente = await this.pacienteRepository.save(createPacienteDto);
     return nuevoPaciente;
+  }
+
+  async findUltimosPacientes(idPerfil: number) {
+    const perfilEncontrado = await this.perfilRepository.findOne({
+      where: {
+        id: idPerfil,
+      },
+    });
+
+    const usuarioEncontrado = await this.usuariosRepository.findOne({
+      where: { id: perfilEncontrado.usuario.id },
+    });
+    const pacientesEncontrados = await this.pacienteRepository
+      .createQueryBuilder('paciente')
+      .select([
+        'paciente.nombre',
+        'paciente.apellido',
+        'paciente.fechaNacimiento',
+        'paciente.sexo',
+        'paciente.direccion',
+        'paciente.telefono',
+        'paciente.correo',
+        'paciente.aplicacionID',
+        'paciente.id',
+        'paciente.usuarioID',
+        'paciente.createdAt',
+      ])
+      .where('paciente.usuarioID = :usuarioID', {
+        usuarioID: usuarioEncontrado.id,
+      })
+      .orderBy('paciente.createdAt', 'DESC')
+      .take(4)
+      .getMany();
+    return pacientesEncontrados;
   }
 }

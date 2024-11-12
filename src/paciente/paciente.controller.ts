@@ -6,8 +6,6 @@ import {
   Patch,
   Param,
   Delete,
-  HttpException,
-  HttpStatus,
 } from '@nestjs/common';
 import { PacienteService } from './paciente.service';
 import { CreatePacienteDto } from './dto/create-paciente.dto';
@@ -77,5 +75,10 @@ export class PacienteController {
     return {
       message: `${script.totalPacientes} pacientes y análisis creados con éxito.`,
     };
+  }
+
+  @Get('/perfil/:id')
+  pacientesPerfil(@Param('id') id: string) {
+    return this.pacienteService.findUltimosPacientes(+id);
   }
 }

@@ -15,6 +15,9 @@ export class Perfil {
   @Column({ nullable: true })
   private rol: string;
 
+  @Column({ nullable: true })
+  private acercaDe: string;
+
   // false= 0 true= 1
   @Column('tinyint', { width: 1, default: 0 })
   private premium: boolean;
@@ -26,8 +29,14 @@ export class Perfil {
   @JoinColumn({ name: 'usuarioId' })
   public usuario: Usuarios;
 
-  constructor(rol: string, premium: boolean, usuario: Usuarios) {
+  constructor(
+    rol: string,
+    acercaDe: string,
+    premium: boolean,
+    usuario: Usuarios,
+  ) {
     this.rol = rol;
+    this.acercaDe = acercaDe;
     this.premium = premium;
     this.usuario = usuario;
   }
@@ -39,6 +48,14 @@ export class Perfil {
 
   public setRol(rol: string): void {
     this.rol = rol;
+  }
+
+  public getAcercaDe(): string {
+    return this.acercaDe;
+  }
+
+  public setAcercaDe(acercaDe: string): void {
+    this.acercaDe = acercaDe;
   }
 
   // Getter and Setter for premium

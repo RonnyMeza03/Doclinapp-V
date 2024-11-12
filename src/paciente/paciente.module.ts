@@ -9,6 +9,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { Analisi, AnalisisSchema } from 'src/schemas/analisis.schema';
 import { AnalisisService } from 'src/analisis/analisis.service';
 import { Contador, ContadorSchema } from 'src/schemas/contador.schema';
+import { Perfil } from 'src/perfil/entities/perfil.entity';
 
 @Module({
   imports: [
@@ -16,7 +17,7 @@ import { Contador, ContadorSchema } from 'src/schemas/contador.schema';
       { name: Analisi.name, schema: AnalisisSchema },
       { name: Contador.name, schema: ContadorSchema },
     ]),
-    TypeOrmModule.forFeature([Paciente, Usuarios]),
+    TypeOrmModule.forFeature([Paciente, Usuarios, Perfil]),
     AplicacionModule,
   ],
   controllers: [PacienteController],
