@@ -8,6 +8,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AnalisisModule } from './analisis/analisis.module';
 import { PerfilModule } from './perfil/perfil.module';
 import { MongooseModule } from '@nestjs/mongoose';
+import { PaypalModule } from './paypal/paypal.module';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { MongooseModule } from '@nestjs/mongoose';
     PacienteModule,
     AnalisisModule,
     PerfilModule,
+    PaypalModule,
   ],
 })
 export class AppModule {}
