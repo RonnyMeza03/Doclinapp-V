@@ -1,6 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { CreatePaypalDto } from './dto/create-paypal.dto';
-import { UpdatePaypalDto } from './dto/update-paypal.dto';
 import { PaypalOrder } from 'src/schemas/IPaypalOrder.schema';
 import { Model } from 'mongoose';
 import { Contador, ContadorDocument } from 'src/schemas/contador.schema';
@@ -17,7 +15,11 @@ export class PaypalService {
     @InjectRepository(Usuarios) private usuarioRepository: Repository<Usuarios>,
   ) {}
 
-  async create(idAuth0: string, paypalOrder: PaypalOrder) {
+  async create(
+    idAuth0: string,
+    paypalOrder: PaypalOrder,
+    itemComprado: string,
+  ) {
     const usuarioEncontrado = await this.usuarioRepository.findOne({
       where: { sub: idAuth0 },
     });
@@ -27,6 +29,7 @@ export class PaypalService {
     }
 
     paypalOrder.usuarioId = usuarioEncontrado.id;
+    paypalOrder.suscripcionComprada = itemComprado;
 
     const paypalOrderUsuario = new this.paypalOrderModel(paypalOrder);
 
@@ -39,10 +42,6 @@ export class PaypalService {
 
   findOne(id: number) {
     return `This action returns a #${id} paypal`;
-  }
-
-  update(id: number, updatePaypalDto: UpdatePaypalDto) {
-    return `This action updates a #${id} paypal`;
   }
 
   remove(id: number) {

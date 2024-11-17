@@ -67,6 +67,9 @@ export class PaypalOrder extends Document {
   public links: any[];
 
   @Prop()
+  public suscripcionComprada: string;
+
+  @Prop()
   public usuarioId: number;
 }
 
