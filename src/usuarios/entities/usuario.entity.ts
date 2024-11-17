@@ -29,7 +29,7 @@ export abstract class Usuarios {
   @Column()
   nickname: string;
 
-  @Column()
+  @Column({ unique: true })
   sub: string;
 
   @Column()
@@ -38,10 +38,10 @@ export abstract class Usuarios {
   @Column()
   email_verified: boolean;
 
-  @Column()
+  @Column({ nullable: true })
   family_name: string;
 
-  @Column()
+  @Column({ nullable: true })
   given_name: string;
 
   @Column()

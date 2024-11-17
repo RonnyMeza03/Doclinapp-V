@@ -27,7 +27,7 @@ export class UsuariosService {
 
   async createUsuario(usuario: CreateUsuarioDto) {
     //Verificamos que la aplicacion existe
-    const aplicacionEncontrada = this.aplicacionService.findOne(
+    const aplicacionEncontrada = await this.aplicacionService.findOne(
       usuario.aplicacionID,
     );
 
@@ -40,7 +40,7 @@ export class UsuariosService {
     // es asincrono porque necesita consultar a la base de datos para obtener el usuario encontrado
     const usuarioEncontrado = await this.usuarioRepository.findOne({
       where: {
-        nickname: usuario.nickname,
+        sub: usuario.sub,
       },
     });
 
@@ -49,7 +49,7 @@ export class UsuariosService {
     }
 
     const nuevoUsuario = this.usuarioRepository.create(usuario);
-    return this.usuarioRepository.save(nuevoUsuario);
+    return await this.usuarioRepository.save(nuevoUsuario);
   }
 
   findAll() {

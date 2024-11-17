@@ -105,7 +105,7 @@ export class PacienteService {
   }
 
   async findAnalisisPaciente(idPaciente: number) {
-    const pacienteAnalisis = await this.analisisRepository.findOne({
+    const pacienteAnalisis = await this.analisisRepository.find({
       pacienteID: idPaciente,
     });
     if (!pacienteAnalisis) {
